@@ -125,6 +125,8 @@ The reduct VM is a register-based virtual machine, not a stack-based virtual mac
 
 If the REGISTERS field contains the number 3, for example, then registers 0, 1, and 2 may be used by the program in appropriate locations. The program is not well-formed if its execution would require accessing any registers not included by the REGISTERS field.
 
+In addition to the numbered registers, there is also an implicit accumulator register, which is also 64-bits.
+
 #### Buffers
 
 The BUFFERSIZE field specifies the size of the program's scratch buffer. This size is measured in bytes. The buffer may be used by certain operations that work with arrays of bytes.
@@ -140,7 +142,33 @@ Some instructions are encoded by a single byte. Other instructions are encoded b
 After executing either kind of instruction, the PC moves to the next instruction directly past the executed instruction.
 (Unless, of course, the instruction modifies the current PC value.)
 
+### Bytecode encoding
+
+IN PROGRESS.
+
 ### Bytecode instructions
 
-SPECIFICATION IS IN PROGRESS.
+The following instructions must be available in every valid implementation:
+
+* NOP - no operation
+* CONST - load constant [zero, signed byte, unsigned byte, signed 2 bytes, unsigned 2 bytes, signed 4 bytes, unsigned 4 bytes, 8 bytes]
+* STORE - store accumulator in register
+* LOAD - load register into accumulator
+* XCHG - exchange accumulator with register
+* ADD - add register to accumulator, or vice versa
+* ADDC - add constant signed byte to accumulator
+* SUB - subtract register from accumulator, or vice versa
+* MUL - multiply accumulator by register, or vice versa
+* MULC - multiple accumulator by constant signed byte
+* DIV - divide accumulator by register, or vice versa
+* MOD - modulo accumulator by register, or vice versa
+* AMC - multiple accumulator by constant signed byte and add another constant signed byte
+* AND - binary and accumulator by register, or vice versa
+* IOR - binary inclusive or accumulator by register, or vice versa
+* XOR - binary exclusive or accumulator by register, or vice versa
+* GET - load into accumulator the [byte, 2 bytes, 4 bytes, 8 bytes] from the memory buffer at the offset in accumulator
+* PUT - store register into the [byte, 2 bytes, 4 bytes, 8 bytes] in the memory buffer at the offset in accumulator
+* JMPB - jump forward by a constant unsigned byte, relative to the end of this instruction
+* JMPS - jump forward by a constant unsigned 2 bytes, relative to the end of this instruction
+* JMPI - jump forward by a constant unsigned 4 bytes, relative to the end of this instruction
 
